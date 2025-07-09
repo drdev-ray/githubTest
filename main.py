@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def main() -> None:
-    """Entry point."""
+    """Entry point. # TODO: unit test"""
     audio = AudioCapture()
     video = VideoCapture()
     analytics = Analytics()

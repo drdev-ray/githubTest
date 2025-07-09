@@ -25,14 +25,14 @@ mp_detect = mp.solutions.face_detection
 
 
 def eye_aspect_ratio(landmarks: np.ndarray) -> float:
-    """Compute eye openness proxy."""
+    """Compute eye openness proxy. # TODO: unit test"""
     left = np.linalg.norm(landmarks[159] - landmarks[145])
     width = np.linalg.norm(landmarks[33] - landmarks[133])
     return left / (width + 1e-6)
 
 
 def smile_ratio(landmarks: np.ndarray) -> float:
-    """Compute smile proxy."""
+    """Compute smile proxy. # TODO: unit test"""
     mouth = np.linalg.norm(landmarks[61] - landmarks[291])
     face = np.linalg.norm(landmarks[1] - landmarks[199])
     return mouth / (face + 1e-6)
@@ -42,6 +42,7 @@ class VideoCapture:
     """Capture webcam frames and compute facial engagement."""
 
     def __init__(self) -> None:
+        """Initialize video capture. # TODO: unit test"""
         self._cap = None
         self._latest_engage = 0.0
         self._lock = threading.Lock()
@@ -53,7 +54,7 @@ class VideoCapture:
         self._cap.set(cv2.CAP_PROP_FPS, FPS)
 
     def get_latest_engage(self) -> float:
-        """Thread-safe retrieval of latest engagement."""
+        """Thread-safe retrieval of latest engagement. # TODO: unit test"""
         with self._lock:
             return self._latest_engage
 
@@ -62,7 +63,7 @@ class VideoCapture:
             self._latest_engage = value
 
     def run(self) -> None:
-        """Main loop capturing video frames."""
+        """Main loop capturing video frames. # TODO: unit test"""
         try:
             self._open_cap()
         except Exception as exc:  # pragma: no cover - runtime only
@@ -104,7 +105,7 @@ class VideoCapture:
 
 
 def main() -> None:
-    """Launch video capture (debug)."""
+    """Launch video capture (debug). # TODO: unit test"""
     cap = VideoCapture()
     thread = threading.Thread(target=cap.run, daemon=True)
     thread.start()

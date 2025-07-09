@@ -20,16 +20,17 @@ class Dashboard:
     """Streamlit UI running in same process."""
 
     def __init__(self) -> None:
+        """Initialize dashboard buffers. # TODO: unit test"""
         self._buffer: Deque[Tuple[float, float, float]] = deque(maxlen=60)
         self._lock = threading.Lock()
 
     def push(self, clap: float, engage: float, heat: float) -> None:
-        """Add metrics to internal buffer."""
+        """Add metrics to internal buffer. # TODO: unit test"""
         with self._lock:
             self._buffer.append((clap, engage, heat))
 
     def start(self) -> None:
-        """Start Streamlit interface."""
+        """Start Streamlit interface. # TODO: unit test"""
         st.title("HeatIndex – Live Engagement")
         if "data" not in st.session_state:
             st.session_state.data = deque(maxlen=60)

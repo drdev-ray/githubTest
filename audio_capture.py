@@ -29,6 +29,7 @@ class AudioCapture:
     """Capture microphone input and compute ClapScore."""
 
     def __init__(self) -> None:
+        """Initialize audio resources. # TODO: unit test"""
         self._p = pyaudio.PyAudio()
         self._stream = None
         self._latest_score = 0.0
@@ -51,7 +52,7 @@ class AudioCapture:
         )
 
     def get_latest_clapscore(self) -> float:
-        """Thread-safe retrieval of latest ClapScore."""
+        """Thread-safe retrieval of latest ClapScore. # TODO: unit test"""
         with self._lock:
             return self._latest_score
 
@@ -63,7 +64,7 @@ class AudioCapture:
             self._latest_score = score
 
     def run(self) -> None:
-        """Main loop reading audio frames."""
+        """Main loop reading audio frames. # TODO: unit test"""
         try:
             self._open_stream()
         except Exception as exc:  # pragma: no cover - runtime only
@@ -94,7 +95,7 @@ class AudioCapture:
 
 
 def main() -> None:
-    """Launch audio capture (debug)."""
+    """Launch audio capture (debug). # TODO: unit test"""
     cap = AudioCapture()
     thread = threading.Thread(target=cap.run, daemon=True)
     thread.start()
