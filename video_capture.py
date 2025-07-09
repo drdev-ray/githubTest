@@ -41,12 +41,13 @@ def smile_ratio(landmarks: np.ndarray) -> float:
 class VideoCapture:
     """Capture webcam frames and compute facial engagement."""
 
-    def __init__(self) -> None:
+    def __init__(self, display: bool = False) -> None:
         """Initialize video capture. # TODO: unit test"""
         self._cap = None
         self._latest_engage = 0.0
         self._lock = threading.Lock()
         self._prev_value = 0.0
+        self._display = display
 
     @retry(stop_max_attempt_number=3, wait_exponential_multiplier=500)
     def _open_cap(self) -> None:
@@ -101,12 +102,19 @@ class VideoCapture:
                             engage = positive / faces * 100
                     self._prev_value = engage
                     self._update_value(engage)
+                    if self._display:
+                        cv2.imshow("Webcam", frame)
+                        if cv2.waitKey(1) & 0xFF == ord("q"):
+                            break
                     time.sleep(1 / FPS)
+                self._cap.release()
+                if self._display:
+                    cv2.destroyAllWindows()
 
 
 def main() -> None:
     """Launch video capture (debug). # TODO: unit test"""
-    cap = VideoCapture()
+    cap = VideoCapture(display=True)
     thread = threading.Thread(target=cap.run, daemon=True)
     thread.start()
     for _ in range(10):
