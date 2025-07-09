@@ -70,7 +70,10 @@ class VideoCapture:
             return
 
         with mp_face.FaceMesh(static_image_mode=False, max_num_faces=5) as face_mesh:
-            with mp_detect.FaceDetection(model_selection=0, min_detection_confidence=0.5) as detect:
+            with mp_detect.FaceDetection(
+                model_selection=0,
+                min_detection_confidence=0.5,
+            ) as detect:
                 while True:
                     success, frame = self._cap.read()
                     if not success:

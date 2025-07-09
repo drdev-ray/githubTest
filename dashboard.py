@@ -44,11 +44,17 @@ class Dashboard:
                 col1.metric("ClapScore", f"{clap:.1f}")
                 col2.metric("FacialEngageIdx", f"{engage:.1f}")
                 col3.metric("HeatIndex", f"{heat:.1f}")
-                df = pd.DataFrame(st.session_state.data, columns=["clap", "engage", "heat"])
+                df = pd.DataFrame(
+                    st.session_state.data,
+                    columns=["clap", "engage", "heat"],
+                )
                 st.line_chart(df)
                 color = "green" if heat >= 70 else "yellow" if heat >= 40 else "red"
                 st.markdown(
-                    f"<div style='width:30px;height:30px;border-radius:50%;background:{color}'></div>",
+                    (
+                        f"<div style='width:30px;height:30px;border-radius:50%;"
+                        f"background:{color}'></div>"
+                    ),
                     unsafe_allow_html=True,
                 )
             time.sleep(1)

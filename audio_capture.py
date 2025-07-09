@@ -33,8 +33,12 @@ class AudioCapture:
         self._stream = None
         self._latest_score = 0.0
         self._lock = threading.Lock()
-        self._ambient_values: Deque[float] = deque(maxlen=int(30 * RATE / FRAMES_PER_BUFFER))
-        self._clap_flags: Deque[bool] = deque(maxlen=int(3 * RATE / FRAMES_PER_BUFFER))
+        self._ambient_values: Deque[float] = deque(
+            maxlen=int(30 * RATE / FRAMES_PER_BUFFER)
+        )
+        self._clap_flags: Deque[bool] = deque(
+            maxlen=int(3 * RATE / FRAMES_PER_BUFFER)
+        )
 
     @retry(stop_max_attempt_number=3, wait_exponential_multiplier=500)
     def _open_stream(self) -> None:
@@ -77,7 +81,9 @@ class AudioCapture:
             rms = np.sqrt(np.mean(samples ** 2))
             rms_db = 20 * np.log10(max(rms, 1e-6))
 
-            ambient_median = np.median(self._ambient_values) if self._ambient_values else -60
+            ambient_median = (
+                np.median(self._ambient_values) if self._ambient_values else -60
+            )
             is_clap = rms_db > ambient_median + 12
 
             if not is_clap:
