@@ -15,3 +15,10 @@ pip install -r requirements.txt
 ```bash
 streamlit run main.py
 ```
+
+## Debug hardware
+カメラ・マイク取得確認用:
+```bash
+python video_capture.py  # Press q to quit
+python audio_capture.py
+```

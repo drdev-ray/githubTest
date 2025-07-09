@@ -28,7 +28,7 @@ FRAMES_PER_BUFFER = 1024
 class AudioCapture:
     """Capture microphone input and compute ClapScore."""
 
-    def __init__(self) -> None:
+    def __init__(self, display: bool = False) -> None:
         """Initialize audio resources. # TODO: unit test"""
         self._p = pyaudio.PyAudio()
         self._stream = None
@@ -40,6 +40,7 @@ class AudioCapture:
         self._clap_flags: Deque[bool] = deque(
             maxlen=int(3 * RATE / FRAMES_PER_BUFFER)
         )
+        self._display = display
 
     @retry(stop_max_attempt_number=3, wait_exponential_multiplier=500)
     def _open_stream(self) -> None:
@@ -81,6 +82,8 @@ class AudioCapture:
             samples = np.frombuffer(data, dtype=np.int16).astype(np.float32)
             rms = np.sqrt(np.mean(samples ** 2))
             rms_db = 20 * np.log10(max(rms, 1e-6))
+            if self._display:
+                logger.info("RMS dB: %.2f", rms_db)
 
             ambient_median = (
                 np.median(self._ambient_values) if self._ambient_values else -60
@@ -96,7 +99,7 @@ class AudioCapture:
 
 def main() -> None:
     """Launch audio capture (debug). # TODO: unit test"""
-    cap = AudioCapture()
+    cap = AudioCapture(display=True)
     thread = threading.Thread(target=cap.run, daemon=True)
     thread.start()
     for _ in range(10):
