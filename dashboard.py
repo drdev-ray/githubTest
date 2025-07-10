@@ -96,4 +96,6 @@ class Dashboard:
                             }
                         )
                         st.bar_chart(age_df.set_index("age"))
+            else:
+                placeholder.info("Waiting for metrics...")
             time.sleep(1)

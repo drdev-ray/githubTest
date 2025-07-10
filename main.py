@@ -28,21 +28,37 @@ def main() -> None:
     analytics = Analytics()
     dashboard = Dashboard()
 
+    def process_loop() -> None:
+        """Worker collecting metrics and logging."""
+        log_path = Path("logs/metrics.csv")
+        while True:
+            engage = video.get_latest_engage()
+            focus_val = video.get_latest_focus()
+            demo = video.get_latest_demo()
+            demo_weight = 100.0
+            heat = analytics.push(engage, focus_val, demo_weight)
+            dashboard.push(engage, focus_val, heat, demo)
+            row = [
+                time.time(),
+                engage,
+                focus_val,
+                heat,
+                demo["male"],
+                demo["female"],
+                demo["unknown"],
+                demo["teen"],
+                demo["twenties"],
+                demo["thirties"],
+                demo["forties"],
+            ]
+            append_csv(log_path, row)
+            time.sleep(1)
+
     threading.Thread(target=video.run, daemon=True).start()
-    threading.Thread(target=dashboard.start, daemon=True).start()
+    threading.Thread(target=process_loop, daemon=True).start()
 
-    log_path = Path("logs/metrics.csv")
-
-    while True:
-        engage = video.get_latest_engage()
-        focus_val = video.get_latest_focus()
-        demo = video.get_latest_demo()
-        demo_weight = 100.0
-        heat = analytics.push(engage, focus_val, demo_weight)
-        dashboard.push(engage, focus_val, heat, demo)
-        row = [time.time(), engage, focus_val, heat, demo["male"], demo["female"], demo["unknown"], demo["teen"], demo["twenties"], demo["thirties"], demo["forties"]]
-        append_csv(log_path, row)
-        time.sleep(1)
+    # Streamlit UI runs on main thread to avoid blank screen
+    dashboard.start()
 
 
 if __name__ == "__main__":

@@ -16,6 +16,8 @@ pip install -r requirements.txt
 streamlit run main.py
 ```
 
+初回起動時は計測が始まるまで数秒ほど画面に「Waiting for metrics...」と表示されます。
+
 ## Privacy
 - 取得した映像や顔画像は保存しません。
 - すべての推論はローカルで完結します。
