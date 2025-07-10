@@ -1,0 +1,11 @@
+opencv-python==4.10.*
+mediapipe>=0.10.0
+numpy
+pandas
+streamlit>=1.35
+matplotlib
+onnxruntime>=1.18
+scikit-image
+tqdm
+retrying
+plotly
