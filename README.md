@@ -29,3 +29,7 @@ streamlit run main.py
 ```bash
 pip install onnxruntime
 ```
+- `ModuleNotFoundError: plotly` が表示された場合は、以下を実行してください。
+```bash
+pip install plotly
+```
