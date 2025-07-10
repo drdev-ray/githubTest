@@ -67,7 +67,7 @@ class Dashboard:
                     col1.metric("Engage %", f"{engage:.1f}", f"{delta_e:+.1f}")
                     col2.metric("Focus %", f"{focus:.1f}", f"{delta_f:+.1f}")
                     col3.metric("Heat Index", f"{heat:.1f}", f"{delta_h:+.1f}")
-                    st.line_chart(df, key="history")
+                    st.line_chart(df)
                     color = "green" if heat >= 70 else "yellow" if heat >= 40 else "red"
                     st.markdown(
                         f"<div style='width:30px;height:30px;border-radius:50%;background:{color};margin:auto'></div>",
