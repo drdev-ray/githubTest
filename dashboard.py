@@ -43,9 +43,12 @@ class Dashboard:
         )
         if "data" not in st.session_state:
             st.session_state.data = deque(maxlen=60)
+        demo_toggle_box = st.sidebar.checkbox(
+            "Demographics ON", True, key="demo"
+        )
         placeholder = st.empty()
         while True:
-            demo_toggle = st.sidebar.checkbox("Demographics ON", True, key="demo")
+            demo_toggle = st.session_state.get("demo", demo_toggle_box)
             if self._buffer:
                 with self._lock:
                     values = list(self._buffer)
