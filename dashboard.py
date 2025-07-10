@@ -67,7 +67,7 @@ class Dashboard:
                     col1.metric("Engage %", f"{engage:.1f}", f"{delta_e:+.1f}")
                     col2.metric("Focus %", f"{focus:.1f}", f"{delta_f:+.1f}")
                     col3.metric("Heat Index", f"{heat:.1f}", f"{delta_h:+.1f}")
-                    st.line_chart(df)
+                    st.line_chart(df, key="history")
                     color = "green" if heat >= 70 else "yellow" if heat >= 40 else "red"
                     st.markdown(
                         f"<div style='width:30px;height:30px;border-radius:50%;background:{color};margin:auto'></div>",
@@ -90,7 +90,8 @@ class Dashboard:
                                     }
                                 ],
                                 "layout": {"title": "Gender"},
-                            }
+                            },
+                            key="gender_pie",
                         )
                         age_df = pd.DataFrame(
                             {
@@ -98,7 +99,7 @@ class Dashboard:
                                 "val": [demo["teen"], demo["twenties"], demo["thirties"], demo["forties"]],
                             }
                         )
-                        st.bar_chart(age_df.set_index("age"))
+                        st.bar_chart(age_df.set_index("age"), key="age_bar")
             else:
                 placeholder.info("Waiting for metrics...")
             time.sleep(1)
