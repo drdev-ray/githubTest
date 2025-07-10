@@ -1,8 +1,8 @@
-# HeatIndex-MVP
+# HeatIndex-MVP-v0.2
 
-簡単な説明 (JP): ノートPCのウェブカメラとUSBマイクだけで、小規模会場向けにライブエンゲージメントを計測するMVPです。
+簡単な説明 (JP): ノートPCのウェブカメラだけで観客のエンゲージメントを推定するオープンソースMVPです。
 
-Brief description (EN): Minimum viable product for measuring live audience engagement using only a laptop webcam and USB microphone.
+Brief description (EN): Open-source MVP for estimating audience engagement using only a laptop webcam.
 
 ## Setup
 ```bash
@@ -16,9 +16,7 @@ pip install -r requirements.txt
 streamlit run main.py
 ```
 
-## Debug hardware
-カメラ・マイク取得確認用:
-```bash
-python video_capture.py  # Press q to quit
-python audio_capture.py
-```
+## Privacy
+- 取得した映像や顔画像は保存しません。
+- すべての推論はローカルで完結します。
+- 年齢・性別推定はあくまで参考値です。

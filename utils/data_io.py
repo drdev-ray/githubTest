@@ -12,14 +12,28 @@ from retrying import retry
 
 @retry(stop_max_attempt_number=3, wait_exponential_multiplier=500)
 def append_csv(path: Path, row: Iterable) -> None:
-    """Append a row to CSV, creating file if missing. # TODO: unit test"""
+    """Append a row to CSV, creating file if missing."""  # TODO unit-test
     path.parent.mkdir(parents=True, exist_ok=True)
     exists = path.exists()
     try:
         with path.open("a", newline="") as f:
             writer = csv.writer(f)
             if not exists:
-                writer.writerow(["timestamp", "clap", "engage", "heat"])
+                writer.writerow(
+                    [
+                        "timestamp",
+                        "engage",
+                        "focus",
+                        "heat",
+                        "male",
+                        "female",
+                        "unknown",
+                        "teen",
+                        "twenties",
+                        "thirties",
+                        "forties",
+                    ]
+                )
             writer.writerow(row)
     except Exception as exc:  # pragma: no cover - runtime only
         raise IOError from exc
