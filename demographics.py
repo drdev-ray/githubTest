@@ -10,12 +10,18 @@ from typing import Tuple
 
 import cv2
 import numpy as np
-import onnxruntime as ort
+try:
+    import onnxruntime as ort
+    ORT_AVAILABLE = True
+except Exception as exc:  # pragma: no cover - import time
+    ort = None
+    ORT_AVAILABLE = False
+    logging.warning("onnxruntime missing, demographics disabled: %s", exc)
 
 logger = logging.getLogger(__name__)
 MODEL_URL = "https://github.com/opencv/opencv_zoo/raw/main/models/age_gender/age_gender.onnx"
 MODEL_PATH = Path("downloads/age_gender.onnx")
-_session: ort.InferenceSession | None = None
+_session = None
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:
@@ -34,7 +40,9 @@ def _ensure_model() -> None:
         raise
 
 
-def _load_session() -> ort.InferenceSession:
+def _load_session() -> "ort.InferenceSession":
+    if not ORT_AVAILABLE:
+        raise RuntimeError("onnxruntime is not available")
     global _session
     if _session is None:
         _ensure_model()
@@ -44,7 +52,7 @@ def _load_session() -> ort.InferenceSession:
 
 def classify(roi: np.ndarray, enabled: bool = True) -> Tuple[str, str]:
     """Return age bin and gender string."""  # TODO unit-test
-    if not enabled:
+    if not enabled or not ORT_AVAILABLE:
         return "unknown", "unknown"
     session = _load_session()
     img = cv2.resize(roi, (224, 224))

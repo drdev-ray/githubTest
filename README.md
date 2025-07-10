@@ -22,3 +22,10 @@ streamlit run main.py
 - 取得した映像や顔画像は保存しません。
 - すべての推論はローカルで完結します。
 - 年齢・性別推定はあくまで参考値です。
+
+## Troubleshooting
+- `ModuleNotFoundError: onnxruntime` が表示された場合は、依存関係が正しく
+  インストールされていない可能性があります。以下を実行してください。
+```bash
+pip install onnxruntime
+```
